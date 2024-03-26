@@ -622,7 +622,6 @@ func NewEvmos(
 		app.BankKeeper,
 		app.IBCKeeper.ChannelKeeper,
 		app.TransferKeeper,
-		app.ClaimsKeeper,
 	)
 
 	// NOTE: app.Erc20Keeper is already initialized elsewhere

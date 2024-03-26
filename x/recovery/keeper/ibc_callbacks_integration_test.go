@@ -35,9 +35,9 @@ var _ = Describe("Recovery: Performing an IBC Transfer", Ordered, func() {
 
 	Describe("from a non-authorized chain", func() {
 		BeforeEach(func() {
-			params := claimstypes.DefaultParams()
+			params := types.DefaultParams()
 			params.AuthorizedChannels = []string{}
-			err := s.EvmosChain.App.(*app.Evmos).ClaimsKeeper.SetParams(s.EvmosChain.GetContext(), params)
+			err := s.EvmosChain.App.(*app.Evmos).RecoveryKeeper.SetParams(s.EvmosChain.GetContext(), params)
 			s.Require().NoError(err)
 
 			sender = s.IBCOsmosisChain.SenderAccount.GetAddress().String()

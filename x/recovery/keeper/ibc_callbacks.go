@@ -42,15 +42,14 @@ func (k Keeper) OnRecvPacket(
 	logger := k.Logger(ctx)
 
 	params := k.GetParams(ctx)
-	claimsParams := k.claimsKeeper.GetParams(ctx)
 
 	// Check and return original ACK if:
 	//  - recovery is disabled globally
 	//  - channel is not authorized
 	//  - channel is an EVM channel
 	if !params.EnableRecovery ||
-		!claimsParams.IsAuthorizedChannel(packet.DestinationChannel) ||
-		claimsParams.IsEVMChannel(packet.DestinationChannel) {
+		!params.IsAuthorizedChannel(packet.DestinationChannel) ||
+		params.IsEVMChannel(packet.DestinationChannel) {
 		return ack
 	}
 
