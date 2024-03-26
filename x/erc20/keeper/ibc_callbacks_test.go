@@ -247,9 +247,9 @@ func (suite *KeeperTestSuite) TestOnRecvPacket() {
 		{
 			name: "ibc conversion - sender == receiver and from evm chain",
 			malleate: func() {
-				claimsParams := suite.app.ClaimsKeeper.GetParams(suite.ctx)
-				claimsParams.EVMChannels = []string{evmosChannel}
-				suite.app.ClaimsKeeper.SetParams(suite.ctx, claimsParams) //nolint:errcheck
+				params := suite.app.RecoveryKeeper.GetParams(suite.ctx)
+				params.EVMChannels = []string{evmosChannel}
+				suite.app.RecoveryKeeper.SetParams(suite.ctx, params) //nolint:errcheck
 
 				sourcePrefix := transfertypes.GetDenomPrefix(transfertypes.PortID, sourceChannel)
 				prefixedDenom := sourcePrefix + registeredDenom
@@ -348,7 +348,7 @@ func (suite *KeeperTestSuite) TestOnRecvPacket() {
 				suite.app.BankKeeper,
 				suite.app.EvmKeeper,
 				suite.app.StakingKeeper,
-				suite.app.ClaimsKeeper,
+				suite.app.RecoveryKeeper,
 			)
 
 			// Fund receiver account with EVMOS, ERC20 coins and IBC vouchers

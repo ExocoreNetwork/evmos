@@ -16,9 +16,9 @@ import (
 	"github.com/ethereum/go-ethereum/core"
 	"github.com/ethereum/go-ethereum/core/vm"
 
-	claimstypes "github.com/evmos/evmos/v14/x/claims/types"
 	"github.com/evmos/evmos/v14/x/evm/statedb"
 	evmtypes "github.com/evmos/evmos/v14/x/evm/types"
+	recoverytypes "github.com/evmos/evmos/v14/x/recovery/types"
 )
 
 // AccountKeeper defines the expected interface needed to retrieve account info.
@@ -55,9 +55,12 @@ type EVMKeeper interface {
 	ApplyMessage(ctx sdk.Context, msg core.Message, tracer vm.EVMLogger, commit bool) (*evmtypes.MsgEthereumTxResponse, error)
 }
 
-// StakingKeeper defines the expected interface needed to retrieve the staking denom.
-type ClaimsKeeper interface {
-	GetParams(ctx sdk.Context) claimstypes.Params
+// RecoveryKeeper is the interface used to retrieve the params in the recovery keeper.
+// These params contain, among other things, the ability to check whether an asset
+// received over IBC is from a (known) EVM chain. This is used to convert said token
+// into its ERC20 representation, if one is registered.
+type RecoveryKeeper interface {
+	GetParams(ctx sdk.Context) recoverytypes.Params
 }
 
 type (

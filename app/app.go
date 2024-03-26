@@ -553,9 +553,22 @@ func NewEvmos(
 		app.AccountKeeper, app.BankKeeper, app.DistrKeeper, app.StakingKeeper, govKeeper, // NOTE: app.govKeeper not defined yet, use govKeeper
 	)
 
+	// make recoveryKeeper available before erc20Keeper
+	app.RecoveryKeeper = recoverykeeper.NewKeeper(
+		keys[recoverytypes.StoreKey],
+		appCodec,
+		authtypes.NewModuleAddress(govtypes.ModuleName),
+		app.AccountKeeper,
+		app.BankKeeper,
+		app.IBCKeeper.ChannelKeeper,
+		// this is a pointer so that the keeper can be assigned after this call.
+		// the transfer keeper needs the ERC20 keeper, which needs the recovery keeper.
+		&app.TransferKeeper,
+	)
+
 	app.Erc20Keeper = erc20keeper.NewKeeper(
 		keys[erc20types.StoreKey], appCodec, authtypes.NewModuleAddress(govtypes.ModuleName),
-		app.AccountKeeper, app.BankKeeper, app.EvmKeeper, app.StakingKeeper, app.ClaimsKeeper,
+		app.AccountKeeper, app.BankKeeper, app.EvmKeeper, app.StakingKeeper, app.RecoveryKeeper,
 	)
 
 	app.IncentivesKeeper = incentiveskeeper.NewKeeper(
@@ -612,16 +625,6 @@ func NewEvmos(
 			app.RevenueKeeper.Hooks(),
 			app.ClaimsKeeper.Hooks(),
 		),
-	)
-
-	app.RecoveryKeeper = recoverykeeper.NewKeeper(
-		keys[recoverytypes.StoreKey],
-		appCodec,
-		authtypes.NewModuleAddress(govtypes.ModuleName),
-		app.AccountKeeper,
-		app.BankKeeper,
-		app.IBCKeeper.ChannelKeeper,
-		app.TransferKeeper,
 	)
 
 	// NOTE: app.Erc20Keeper is already initialized elsewhere
