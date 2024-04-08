@@ -21,11 +21,11 @@ type Keeper struct {
 	// the address capable of executing a MsgUpdateParams message. Typically, this should be the x/gov module account.
 	authority sdk.AccAddress
 
-	accountKeeper types.AccountKeeper
-	bankKeeper    types.BankKeeper
-	evmKeeper     types.EVMKeeper
-	stakingKeeper types.StakingKeeper
-	claimsKeeper  types.ClaimsKeeper
+	accountKeeper  types.AccountKeeper
+	bankKeeper     types.BankKeeper
+	evmKeeper      types.EVMKeeper
+	stakingKeeper  types.StakingKeeper
+	recoveryKeeper types.RecoveryKeeper
 }
 
 // NewKeeper creates new instances of the erc20 Keeper
@@ -37,7 +37,7 @@ func NewKeeper(
 	bk types.BankKeeper,
 	evmKeeper types.EVMKeeper,
 	sk types.StakingKeeper,
-	ck types.ClaimsKeeper,
+	rk types.RecoveryKeeper,
 ) Keeper {
 	// ensure gov module account is set and is not nil
 	if err := sdk.VerifyAddressFormat(authority); err != nil {
@@ -45,14 +45,14 @@ func NewKeeper(
 	}
 
 	return Keeper{
-		authority:     authority,
-		storeKey:      storeKey,
-		cdc:           cdc,
-		accountKeeper: ak,
-		bankKeeper:    bk,
-		evmKeeper:     evmKeeper,
-		stakingKeeper: sk,
-		claimsKeeper:  ck,
+		authority:      authority,
+		storeKey:       storeKey,
+		cdc:            cdc,
+		accountKeeper:  ak,
+		bankKeeper:     bk,
+		evmKeeper:      evmKeeper,
+		stakingKeeper:  sk,
+		recoveryKeeper: rk,
 	}
 }
 

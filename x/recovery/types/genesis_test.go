@@ -25,7 +25,12 @@ func TestGenesisValidate(t *testing.T) {
 		},
 		{
 			"custom genesis",
-			NewGenesisState(NewParams(true, time.Hour)),
+			NewGenesisState(NewParams(true, time.Hour, []string(nil), []string(nil))),
+			false,
+		},
+		{
+			"custom genesis with channels",
+			NewGenesisState(NewParams(true, time.Hour, []string{"channel-0"}, []string{"channel-1"})),
 			false,
 		},
 	}

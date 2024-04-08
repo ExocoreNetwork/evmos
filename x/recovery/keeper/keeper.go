@@ -35,7 +35,6 @@ type Keeper struct {
 	ics4Wrapper    porttypes.ICS4Wrapper
 	channelKeeper  types.ChannelKeeper
 	transferKeeper types.TransferKeeper
-	claimsKeeper   types.ClaimsKeeper
 }
 
 // NewKeeper returns keeper
@@ -47,7 +46,6 @@ func NewKeeper(
 	bk types.BankKeeper,
 	ck types.ChannelKeeper,
 	tk types.TransferKeeper,
-	claimsKeeper types.ClaimsKeeper,
 ) *Keeper {
 	// ensure gov module account is set and is not nil
 	if err := sdk.VerifyAddressFormat(authority); err != nil {
@@ -61,7 +59,6 @@ func NewKeeper(
 		bankKeeper:     bk,
 		channelKeeper:  ck,
 		transferKeeper: tk,
-		claimsKeeper:   claimsKeeper,
 	}
 }
 

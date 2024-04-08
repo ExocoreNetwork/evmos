@@ -25,12 +25,22 @@ func TestParamsValidate(t *testing.T) {
 		},
 		{
 			"custom params",
-			NewParams(true, time.Hour),
+			NewParams(true, time.Hour, []string(nil), []string(nil)),
 			false,
 		},
 		{
 			"invalid duration",
-			NewParams(true, -1),
+			NewParams(true, -1, []string(nil), []string(nil)),
+			true,
+		},
+		{
+			"invalid authorized channel",
+			NewParams(true, time.Hour, []string{""}, []string(nil)),
+			true,
+		},
+		{
+			"invalid EVM channel",
+			NewParams(true, time.Hour, []string(nil), []string{""}),
 			true,
 		},
 	}
@@ -51,4 +61,7 @@ func TestValidate(t *testing.T) {
 
 	require.Error(t, validateDuration(true))
 	require.NoError(t, validateDuration(time.Hour))
+
+	require.Error(t, ValidateChannels(true))
+	require.NoError(t, ValidateChannels([]string{"channel-0"}))
 }

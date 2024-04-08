@@ -91,7 +91,7 @@ func (suite *KeeperTestSuite) TestOnRecvPacket() {
 		{
 			"continue - destination channel is EVM",
 			func() {
-				EVMChannels := suite.app.ClaimsKeeper.GetParams(suite.ctx).EVMChannels
+				EVMChannels := suite.app.RecoveryKeeper.GetParams(suite.ctx).EVMChannels
 				transfer := transfertypes.NewFungibleTokenPacketData(denom, "100", ethsecpAddrEvmos, ethsecpAddrCosmos, "")
 				bz := transfertypes.ModuleCdc.MustMarshalJSON(&transfer)
 				packet = channeltypes.NewPacket(bz, 1, transfertypes.PortID, sourceChannel, transfertypes.PortID, EVMChannels[0], timeoutHeight, 0)
@@ -322,7 +322,7 @@ func (suite *KeeperTestSuite) TestOnRecvPacket() {
 				suite.app.GetKey(types.StoreKey),
 				suite.app.AppCodec(),
 				authtypes.NewModuleAddress(govtypes.ModuleName),
-				suite.app.AccountKeeper, suite.app.BankKeeper, suite.app.IBCKeeper.ChannelKeeper, mockTransferKeeper, suite.app.ClaimsKeeper)
+				suite.app.AccountKeeper, suite.app.BankKeeper, suite.app.IBCKeeper.ChannelKeeper, mockTransferKeeper)
 
 			// Fund receiver account with EVMOS, ERC20 coins and IBC vouchers
 			err = testutil.FundAccount(suite.ctx, suite.app.BankKeeper, secpAddr, coins)
@@ -581,7 +581,7 @@ func (suite *KeeperTestSuite) TestOnRecvPacketFailTransfer() {
 				suite.app.GetKey(types.StoreKey),
 				suite.app.AppCodec(),
 				authtypes.NewModuleAddress(govtypes.ModuleName),
-				suite.app.AccountKeeper, suite.app.BankKeeper, suite.app.IBCKeeper.ChannelKeeper, mockTransferKeeper, suite.app.ClaimsKeeper)
+				suite.app.AccountKeeper, suite.app.BankKeeper, suite.app.IBCKeeper.ChannelKeeper, mockTransferKeeper)
 
 			// Fund receiver account with EVMOS
 			coins := sdk.NewCoins(
